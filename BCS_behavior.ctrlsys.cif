@@ -1,0 +1,1114 @@
+alg bool r11 = FBCS.present;
+alg bool r21 = FBCS.present <=> FHMI.present;
+alg bool r22 = FBCS.present <=> FDoor.present;
+alg bool r23 = FSecu.present => FBCS.present;
+alg bool r31 = FDoor.present <=> FPowerW.present and FMir.present;
+alg bool r32 = FAlarm.present => FSecu.present;
+alg bool r33 = FCLS.present => FSecu.present;
+alg bool r34 = FRCKey.present => FSecu.present;
+alg bool r41 = FLED.present => FHMI.present;
+alg bool r42 = (FManPW.present <=> (not FAutoPW.present <=> FPowerW.present)) and (FAutoPW.present <=> (not FManPW.present <=> FPowerW.present));
+alg bool r43 = FPowerW.present <=> FFingerP.present;
+alg bool r44 = FMir.present <=> FMirE.present;
+alg bool r45 = FMirHeat.present => FMir.present;
+alg bool r46 = FInterMon.present => FAlarm.present;
+alg bool r47 = FCtrAlarm.present => FRCKey.present;
+alg bool r48 = FCtrAutoPW.present => FRCKey.present;
+alg bool r49 = FSafe.present => FRCKey.present;
+alg bool r410 = FAdjMir.present => FRCKey.present;
+alg bool r411 = FAutoL.present => FCLS.present;
+alg bool r51 = FLED.present <=> FLEDAlarm.present or FLEDFP.present or FLEDCLS.present or FLEDPW.present or FLEDMir.present or FLEDHeat.present;
+alg bool rx1 = FLEDAlarm.present => FAlarm.present;
+alg bool rx2 = FLEDCLS.present => FCLS.present;
+alg bool rx3 = FLEDHeat.present => FMirHeat.present;
+alg bool rx4 = not(FManPW.present and FCtrAutoPW.present);
+alg bool rx5 = FCtrAlarm.present => FAlarm.present;
+alg bool rx6 = FRCKey.present => FCLS.present;
+alg bool sys_valid = r11 and r21 and r22 and r23 and r31 and r32 and r33 and r34 and r41 and r42 and r43 and r44 and r45 and r46 and r47 and r48 and r49 and r410 and r411 and r51 and rx1 and rx2 and rx3 and rx4 and rx5 and rx6;
+type bdd_node_type = tuple(int var; int low; int high);
+type bdd_nodes_type = list[7] bdd_node_type;
+const bdd_nodes_type bdd_nodes = [(58, 1, -2), (59, 2, -1), (60, -2, -1), (58, 4, 6), (59, 5, -1), (60, 6, -1), (8, -1, -2)];
+alg bool bdd_value0 = AlarmSystem.Activated or AlarmSystem.Alarm_detected;
+alg bool bdd_value1 = AlarmSystem.On or AlarmSystem.Alarm_detected;
+alg bool bdd_value2 = Auto_lock.Locked;
+alg bool bdd_value3 = buttonEM.Up or buttonEM.Left;
+alg bool bdd_value4 = buttonEM.Down or buttonEM.Left;
+alg bool bdd_value5 = buttonEM.Right;
+alg bool bdd_value6 = buttonPW.Down;
+alg bool bdd_value7 = buttonPW.Up;
+alg bool bdd_value8 = CLS.Locked;
+alg bool bdd_value9 = EM_heating.On;
+alg bool bdd_value10 = EM_temp_time.Heating_on;
+alg bool bdd_value11 = FAdjMir.present;
+alg bool bdd_value12 = FAlarm.present;
+alg bool bdd_value13 = FAutoL.present;
+alg bool bdd_value14 = FAutoPW.present;
+alg bool bdd_value15 = FBCS.present;
+alg bool bdd_value16 = FCLS.present;
+alg bool bdd_value17 = FCtrAlarm.present;
+alg bool bdd_value18 = FCtrAutoPW.present;
+alg bool bdd_value19 = FDoor.present;
+alg bool bdd_value20 = FFingerP.present;
+alg bool bdd_value21 = FHMI.present;
+alg bool bdd_value22 = fingerPW.On;
+alg bool bdd_value23 = FInterMon.present;
+alg bool bdd_value24 = FLED.present;
+alg bool bdd_value25 = FLEDAlarm.present;
+alg bool bdd_value26 = FLEDCLS.present;
+alg bool bdd_value27 = FLEDFP.present;
+alg bool bdd_value28 = FLEDHeat.present;
+alg bool bdd_value29 = FLEDMir.present;
+alg bool bdd_value30 = FLEDPW.present;
+alg bool bdd_value31 = FManPW.present;
+alg bool bdd_value32 = FMir.present;
+alg bool bdd_value33 = FMirE.present;
+alg bool bdd_value34 = FMirHeat.present;
+alg bool bdd_value35 = FPowerW.present;
+alg bool bdd_value36 = FRCKey.present;
+alg bool bdd_value37 = FSafe.present;
+alg bool bdd_value38 = FSecu.present;
+alg bool bdd_value39 = InteriorMonitoring.On;
+alg bool bdd_value40 = InteriorMonitoring.Detected;
+alg bool bdd_value41 = Key_lock.Locked;
+alg bool bdd_value42 = LED_AS_active.On;
+alg bool bdd_value43 = LED_AS_alarm.On;
+alg bool bdd_value44 = LED_AS_alarm_det.On;
+alg bool bdd_value45 = LED_AS_IM.On;
+alg bool bdd_value46 = LED_CLS.On;
+alg bool bdd_value47 = LED_EM_bottom.On;
+alg bool bdd_value48 = LED_EM_heating.On;
+alg bool bdd_value49 = LED_EM_left.On;
+alg bool bdd_value50 = LED_EM_right.On;
+alg bool bdd_value51 = LED_EM_top.On;
+alg bool bdd_value52 = LED_PW_dn.On;
+alg bool bdd_value53 = LED_PW_FP.On;
+alg bool bdd_value54 = LED_PW_up.On;
+alg bool bdd_value55 = motorEM.Left or motorEM.Up;
+alg bool bdd_value56 = motorEM.Right or motorEM.Up;
+alg bool bdd_value57 = motorEM.Down;
+alg bool bdd_value58 = motorPW.Up or motorPW.Down;
+alg bool bdd_value59 = motorPW.Up_CLS or motorPW.Down;
+alg bool bdd_value60 = motorPW.Down_CLS;
+alg bool bdd_value61 = positionEM.EM_top or positionEM.EM_top_right or (positionEM.EM_bottom_left or positionEM.EM_hor_left);
+alg bool bdd_value62 = positionEM.EM_top_left or positionEM.EM_top_right or (positionEM.EM_bottom_right or positionEM.EM_hor_left);
+alg bool bdd_value63 = positionEM.EM_bottom or positionEM.EM_bottom_left or (positionEM.EM_bottom_right or positionEM.EM_hor_left);
+alg bool bdd_value64 = positionEM.EM_hor_right;
+alg bool bdd_value65 = RCK_CLS.Locked;
+alg bool bdd_value66 = RCK_EM.Up or RCK_EM.Left;
+alg bool bdd_value67 = RCK_EM.Down or RCK_EM.Left;
+alg bool bdd_value68 = RCK_EM.Right;
+alg bool bdd_value69 = RCK_PW.Up;
+alg bool bdd_value70 = RCK_PW.Down;
+alg bool bdd_value71 = Safety_fcn.Unlocked_RCK;
+alg bool bdd_value72 = Safety_fcn.AutoLocking;
+alg bool bdd_value73 = sensorPW.Up;
+alg bool bdd_value74 = sensorPW.Down;
+alg list[75] bool bdd_values = [bdd_value0, bdd_value1, bdd_value2, bdd_value3, bdd_value4, bdd_value5, bdd_value6, bdd_value7, bdd_value8, bdd_value9, bdd_value10, bdd_value11, bdd_value12, bdd_value13, bdd_value14, bdd_value15, bdd_value16, bdd_value17, bdd_value18, bdd_value19, bdd_value20, bdd_value21, bdd_value22, bdd_value23, bdd_value24, bdd_value25, bdd_value26, bdd_value27, bdd_value28, bdd_value29, bdd_value30, bdd_value31, bdd_value32, bdd_value33, bdd_value34, bdd_value35, bdd_value36, bdd_value37, bdd_value38, bdd_value39, bdd_value40, bdd_value41, bdd_value42, bdd_value43, bdd_value44, bdd_value45, bdd_value46, bdd_value47, bdd_value48, bdd_value49, bdd_value50, bdd_value51, bdd_value52, bdd_value53, bdd_value54, bdd_value55, bdd_value56, bdd_value57, bdd_value58, bdd_value59, bdd_value60, bdd_value61, bdd_value62, bdd_value63, bdd_value64, bdd_value65, bdd_value66, bdd_value67, bdd_value68, bdd_value69, bdd_value70, bdd_value71, bdd_value72, bdd_value73, bdd_value74];
+func bool bdd_eval(int idx; list[75] bool values):
+  bdd_node_type node;
+  bool val;
+  while idx >= 0:
+    node := bdd_nodes[idx];
+    val := values[node[var]];
+    idx := if val: node[high] else node[low] end;
+  end
+  return idx = -1;
+end
+plant automaton LED_EM_top:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton LED_EM_left:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton LED_EM_bottom:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton LED_EM_right:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton PRESENCE_CHECK_HMI_LED_EM:
+  location Dummy:
+    initial;
+    marked;
+    edge LED_EM_top.c_off when FLEDMir.present;
+    edge LED_EM_top.c_on when FLEDMir.present;
+    edge LED_EM_left.c_off when FLEDMir.present;
+    edge LED_EM_left.c_on when FLEDMir.present;
+    edge LED_EM_bottom.c_off when FLEDMir.present;
+    edge LED_EM_bottom.c_on when FLEDMir.present;
+    edge LED_EM_right.c_off when FLEDMir.present;
+    edge LED_EM_right.c_on when FLEDMir.present;
+end
+plant automaton LED_PW_FP:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton PRESENCE_CONTROLLED_LED_FP:
+  location Dummy:
+    initial;
+    marked;
+    edge LED_PW_FP.c_on when FLEDFP.present;
+    edge LED_PW_FP.c_off when FLEDFP.present;
+end
+plant automaton LED_PW_up:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton LED_PW_dn:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton PRESENCE_CONTROLLED_PW_DN_UP:
+  location Dummy:
+    initial;
+    marked;
+    edge LED_PW_up.c_on when FLEDPW.present;
+    edge LED_PW_up.c_off when FLEDPW.present;
+    edge LED_PW_dn.c_on when FLEDPW.present;
+    edge LED_PW_dn.c_off when FLEDPW.present;
+end
+plant automaton LED_EM_heating:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton PRESENCE_CONTROLLED_EM_HEAT:
+  location Dummy:
+    initial;
+    marked;
+    edge LED_EM_heating.c_on when FLEDHeat.present;
+    edge LED_EM_heating.c_off when FLEDHeat.present;
+end
+plant automaton LED_CLS:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton PRESENCE_CONTROLLED_LED_CLS:
+  location Dummy:
+    initial;
+    marked;
+    edge LED_CLS.c_on when FLEDCLS.present;
+    edge LED_CLS.c_off when FLEDCLS.present;
+end
+plant automaton LED_AS_active:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton LED_AS_alarm:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton LED_AS_alarm_det:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton LED_AS_IM:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton PRESENCE_CONTROLLED_LED_AS:
+  location Dummy:
+    initial;
+    marked;
+    edge LED_AS_active.c_on when FLEDAlarm.present;
+    edge LED_AS_active.c_off when FLEDAlarm.present;
+    edge LED_AS_alarm.c_on when FLEDAlarm.present;
+    edge LED_AS_alarm.c_off when FLEDAlarm.present;
+    edge LED_AS_alarm_det.c_on when FLEDAlarm.present;
+    edge LED_AS_alarm_det.c_off when FLEDAlarm.present;
+    edge LED_AS_IM.c_on when FLEDAlarm.present;
+    edge LED_AS_IM.c_off when FLEDAlarm.present;
+end
+plant automaton buttonPW:
+  uncontrollable u_up;
+  uncontrollable u_down;
+  uncontrollable u_released;
+  location Idle:
+    initial;
+    marked;
+    edge u_up goto Up;
+    edge u_down goto Down;
+  location Down:
+    edge u_released goto Idle;
+    edge u_up goto Up;
+  location Up:
+    edge u_released goto Idle;
+    edge u_down goto Down;
+end
+plant automaton sensorPW:
+  uncontrollable u_up;
+  uncontrollable u_down;
+  uncontrollable u_inBetween;
+  location InBetween:
+    edge u_up goto Up;
+    edge u_down goto Down;
+  location Up:
+    initial;
+    marked;
+    edge u_inBetween goto InBetween;
+  location Down:
+    edge u_inBetween goto InBetween;
+end
+plant automaton fingerPW:
+  uncontrollable u_fingerDetected;
+  controllable c_fingerReleased;
+  location Off:
+    initial;
+    marked;
+    edge u_fingerDetected goto On;
+  location On:
+    edge c_fingerReleased goto Off;
+end
+plant automaton motorPW:
+  controllable c_up;
+  controllable c_down;
+  controllable c_off_dn;
+  controllable c_off_up;
+  location Idle:
+    initial;
+    marked;
+    edge c_up goto Up;
+    edge c_down goto Down;
+  location Up:
+    edge c_up;
+    edge c_off_up goto Idle;
+    edge CLS.c_lock goto Up_CLS;
+  location Up_CLS:
+    edge CLS.c_unlock goto Up;
+  location Down:
+    edge c_off_dn goto Idle;
+    edge c_down;
+    edge CLS.c_lock goto Down_CLS;
+  location Down_CLS:
+    edge CLS.c_unlock goto Down;
+end
+plant automaton PRESENCE_UNCONTROLLED_PW:
+  location Dummy:
+    initial;
+    marked;
+    edge buttonPW.u_up when FPowerW.present;
+    edge buttonPW.u_down when FPowerW.present;
+    edge buttonPW.u_released when FPowerW.present;
+    edge sensorPW.u_up when FPowerW.present;
+    edge sensorPW.u_down when FPowerW.present;
+    edge sensorPW.u_inBetween when FPowerW.present;
+    edge fingerPW.u_fingerDetected when FFingerP.present;
+end
+plant automaton PRESENCE_CONTROLLED_PW:
+  location Dummy:
+    initial;
+    marked;
+    edge fingerPW.c_fingerReleased when FFingerP.present;
+    edge motorPW.c_up when FPowerW.present;
+    edge motorPW.c_down when FPowerW.present;
+    edge motorPW.c_off_dn when FPowerW.present;
+    edge motorPW.c_off_up when FPowerW.present;
+end
+plant automaton buttonEM:
+  uncontrollable u_up;
+  uncontrollable u_down;
+  uncontrollable u_left;
+  uncontrollable u_right;
+  uncontrollable u_released;
+  location Idle:
+    initial;
+    marked;
+    edge u_up goto Up;
+    edge u_down goto Down;
+    edge u_left goto Left;
+    edge u_right goto Right;
+  location Up:
+    edge u_released goto Idle;
+  location Down:
+    edge u_released goto Idle;
+  location Left:
+    edge u_released goto Idle;
+  location Right:
+    edge u_released goto Idle;
+end
+plant automaton positionEM:
+  uncontrollable u_pos_top;
+  uncontrollable u_pos_down;
+  uncontrollable u_pos_left;
+  uncontrollable u_pos_right;
+  uncontrollable u_rel_top;
+  uncontrollable u_rel_down;
+  uncontrollable u_rel_left;
+  uncontrollable u_rel_right;
+  location EM_hor_pending:
+    initial;
+    marked;
+    edge u_pos_top goto EM_top;
+    edge u_pos_down goto EM_bottom;
+    edge u_pos_left goto EM_hor_left;
+    edge u_pos_right goto EM_hor_right;
+  location EM_top:
+    edge u_pos_left goto EM_top_left;
+    edge u_pos_right goto EM_top_right;
+    edge u_rel_top goto EM_hor_pending;
+  location EM_top_left:
+    edge u_rel_top goto EM_hor_left;
+    edge u_rel_left goto EM_top;
+  location EM_top_right:
+    edge u_rel_top goto EM_hor_right;
+    edge u_rel_right goto EM_top;
+  location EM_bottom:
+    edge u_rel_down goto EM_hor_pending;
+    edge u_pos_left goto EM_bottom_left;
+    edge u_pos_right goto EM_bottom_right;
+  location EM_bottom_left:
+    edge u_rel_down goto EM_hor_left;
+    edge u_rel_left goto EM_bottom;
+  location EM_bottom_right:
+    edge u_rel_down goto EM_hor_right;
+    edge u_rel_right goto EM_bottom;
+  location EM_hor_left:
+    edge u_rel_left goto EM_hor_pending;
+  location EM_hor_right:
+    edge u_rel_right goto EM_hor_pending;
+end
+plant automaton motorEM:
+  controllable c_left;
+  controllable c_right;
+  controllable c_up;
+  controllable c_down;
+  controllable c_off;
+  location Idle:
+    initial;
+    marked;
+    edge c_left goto Left;
+    edge c_right goto Right;
+    edge c_up goto Up;
+    edge c_down goto Down;
+  location Left:
+    edge c_off goto Idle;
+  location Right:
+    edge c_off goto Idle;
+  location Up:
+    edge c_off goto Idle;
+  location Down:
+    edge c_off goto Idle;
+end
+plant automaton PRESENCE_UNCONTROLLED_EM:
+  location Dummy:
+    initial;
+    marked;
+    edge buttonEM.u_up when FMir.present;
+    edge buttonEM.u_down when FMir.present;
+    edge buttonEM.u_left when FMir.present;
+    edge buttonEM.u_right when FMir.present;
+    edge positionEM.u_pos_top when FMir.present;
+    edge positionEM.u_pos_down when FMir.present;
+    edge positionEM.u_pos_left when FMir.present;
+    edge positionEM.u_pos_right when FMir.present;
+    edge positionEM.u_rel_top when FMir.present;
+    edge positionEM.u_rel_down when FMir.present;
+    edge positionEM.u_rel_left when FMir.present;
+    edge positionEM.u_rel_right when FMir.present;
+end
+plant automaton PRESENCE_CONTROLLED_EM:
+  location Dummy:
+    initial;
+    marked;
+    edge motorEM.c_up when FMir.present;
+    edge motorEM.c_down when FMir.present;
+    edge motorEM.c_left when FMir.present;
+    edge motorEM.c_right when FMir.present;
+    edge motorEM.c_off when FMir.present;
+end
+plant automaton EM_temp_time:
+  uncontrollable u_lowtemp;
+  uncontrollable u_done;
+  location Heating_off:
+    initial;
+    marked;
+    edge u_lowtemp goto Heating_on;
+  location Heating_on:
+    edge u_done goto Heating_off;
+end
+plant automaton EM_heating:
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+end
+plant automaton PRESENCE_UNCONTROLLED_MIRHEAT:
+  location Dummy:
+    initial;
+    marked;
+    edge EM_temp_time.u_lowtemp when FMirHeat.present;
+    edge EM_temp_time.u_done when FMirHeat.present;
+end
+plant automaton PRESENCE_CONTROLLED_MIRHEAT:
+  location Dummy:
+    initial;
+    marked;
+    edge EM_heating.c_on when FMirHeat.present;
+    edge EM_heating.c_off when FMirHeat.present;
+end
+plant automaton AlarmSystem:
+  controllable c_on;
+  controllable c_off;
+  controllable c_deactivated;
+  controllable c_activated;
+  controllable c_IM_detected;
+  uncontrollable u_detected;
+  uncontrollable u_time_elapsed;
+  location Deactivated:
+    edge c_activated goto Activated;
+  location Activated:
+    initial;
+    marked;
+    edge c_on goto On;
+    edge c_deactivated goto Deactivated;
+  location On:
+    edge c_off goto Activated;
+    edge u_detected goto Alarm_detected;
+    edge c_IM_detected goto Alarm_detected;
+  location Alarm_detected:
+    edge c_off goto Activated;
+    edge u_time_elapsed goto On;
+end
+plant automaton InteriorMonitoring:
+  uncontrollable u_detected;
+  uncontrollable u_clear;
+  controllable c_on;
+  controllable c_off;
+  location Off:
+    initial;
+    marked;
+    edge c_on goto On;
+  location On:
+    edge c_off goto Off;
+    edge u_detected goto Detected;
+  location Detected:
+    edge u_clear goto On;
+    edge c_off goto Off;
+end
+plant automaton PRESENCE_UNCONTROLLED_AS:
+  location Dummy:
+    initial;
+    marked;
+    edge AlarmSystem.u_detected when FAlarm.present;
+    edge AlarmSystem.u_time_elapsed when FAlarm.present;
+    edge InteriorMonitoring.u_detected when FInterMon.present;
+    edge InteriorMonitoring.u_clear when FInterMon.present;
+end
+plant automaton PRESENCE_CONTROLLED_AS:
+  location Dummy:
+    initial;
+    marked;
+    edge AlarmSystem.c_on when FAlarm.present;
+    edge AlarmSystem.c_off when FAlarm.present;
+    edge AlarmSystem.c_deactivated when FAlarm.present;
+    edge AlarmSystem.c_IM_detected when FInterMon.present;
+    edge InteriorMonitoring.c_on when FInterMon.present;
+    edge InteriorMonitoring.c_off when FInterMon.present;
+end
+plant automaton Key_lock:
+  uncontrollable u_lock;
+  uncontrollable u_unlock;
+  location Unlocked:
+    initial;
+    marked;
+    edge u_lock goto Locked;
+  location Locked:
+    edge u_unlock goto Unlocked;
+end
+plant automaton CLS:
+  controllable c_lock;
+  controllable c_unlock;
+  location Unlocked:
+    initial;
+    marked;
+    edge c_lock goto Locked;
+  location Locked:
+    initial;
+    marked;
+    edge c_unlock goto Unlocked;
+end
+plant automaton Auto_lock:
+  uncontrollable u_drive_lock;
+  uncontrollable u_door_open_unlock;
+  location Unlocked:
+    initial;
+    marked;
+    edge u_drive_lock goto Locked;
+  location Locked:
+    initial;
+    marked;
+    edge u_door_open_unlock goto Unlocked;
+end
+plant automaton PRESENCE_UNCONTROLLED_CLS:
+  location Dummy:
+    initial;
+    marked;
+    edge Key_lock.u_lock when FCLS.present;
+    edge Key_lock.u_unlock when FCLS.present;
+    edge Auto_lock.u_drive_lock when FAutoL.present;
+    edge Auto_lock.u_door_open_unlock when FAutoL.present;
+end
+plant automaton PRESENCE_CONTROLLED_CLS:
+  location Dummy:
+    initial;
+    marked;
+    edge CLS.c_lock when FCLS.present;
+    edge CLS.c_unlock when FCLS.present;
+end
+plant automaton RCK_CLS:
+  uncontrollable u_lock;
+  uncontrollable u_unlock;
+  location Unlocked:
+    initial;
+    marked;
+    edge u_lock goto Locked;
+  location Locked:
+    initial;
+    marked;
+    edge u_unlock goto Unlocked;
+end
+plant automaton Safety_fcn:
+  uncontrollable u_time_elapsed_lock;
+  uncontrollable u_door_open;
+  controllable c_locked;
+  controllable c_unlock;
+  location Idle:
+    initial;
+    marked;
+    edge c_unlock goto Unlocked_RCK;
+  location Unlocked_RCK:
+    marked;
+    edge u_time_elapsed_lock goto AutoLocking;
+    edge u_door_open goto Idle;
+  location AutoLocking:
+    edge CLS.c_lock goto Idle;
+end
+plant automaton RCK_PW:
+  uncontrollable u_up;
+  uncontrollable u_down;
+  uncontrollable u_released;
+  location Idle:
+    initial;
+    marked;
+    edge u_up goto Up;
+    edge u_down goto Down;
+  location Up:
+    edge u_released goto Idle;
+  location Down:
+    edge u_released goto Idle;
+end
+plant automaton RCK_EM:
+  uncontrollable u_up;
+  uncontrollable u_down;
+  uncontrollable u_left;
+  uncontrollable u_right;
+  uncontrollable u_released;
+  location Idle:
+    initial;
+    marked;
+    edge u_up goto Up;
+    edge u_down goto Down;
+    edge u_left goto Left;
+    edge u_right goto Right;
+  location Up:
+    edge u_released goto Idle;
+  location Down:
+    edge u_released goto Idle;
+  location Left:
+    edge u_released goto Idle;
+  location Right:
+    edge u_released goto Idle;
+end
+plant automaton PRESENCE_UNCONTROLLED_SAFETY_RCK:
+  location Dummy:
+    initial;
+    marked;
+    edge Safety_fcn.u_time_elapsed_lock when FSafe.present;
+    edge Safety_fcn.u_door_open when FSafe.present;
+    edge RCK_CLS.u_lock when FCLS.present;
+    edge RCK_CLS.u_unlock when FCLS.present;
+    edge RCK_PW.u_up when FCtrAutoPW.present;
+    edge RCK_PW.u_down when FCtrAutoPW.present;
+    edge RCK_PW.u_released when FCtrAutoPW.present;
+    edge RCK_EM.u_up when FAdjMir.present;
+    edge RCK_EM.u_down when FAdjMir.present;
+    edge RCK_EM.u_left when FAdjMir.present;
+    edge RCK_EM.u_right when FAdjMir.present;
+    edge RCK_EM.u_released when FAdjMir.present;
+end
+plant automaton PRESENCE_CONTROLLED_SAFETY_RCK:
+  location Dummy:
+    initial;
+    marked;
+    edge Safety_fcn.c_unlock when FSafe.present;
+    edge Safety_fcn.c_locked when FSafe.present;
+end
+plant automaton FBCS:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FHMI:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FDoor:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FSecu:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FPowerW:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FMir:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FAlarm:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FRCKey:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FCLS:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FLED:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FFingerP:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FAutoPW:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FManPW:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FMirE:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FMirHeat:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FInterMon:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FCtrAlarm:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FCtrAutoPW:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FSafe:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FAdjMir:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FAutoL:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FLEDMir:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FLEDFP:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FLEDPW:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FLEDCLS:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FLEDAlarm:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FLEDHeat:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton Validity:
+  location:
+    initial sys_valid;
+    marked;
+end
+supervisor automaton sup:
+  alphabet LED_EM_top.c_on, LED_EM_top.c_off, LED_EM_left.c_on, LED_EM_left.c_off, LED_EM_bottom.c_on, LED_EM_bottom.c_off, LED_EM_right.c_on, LED_EM_right.c_off, LED_PW_FP.c_on, LED_PW_FP.c_off, LED_PW_up.c_on, LED_PW_up.c_off, LED_PW_dn.c_on, LED_PW_dn.c_off, LED_EM_heating.c_on, LED_EM_heating.c_off, LED_CLS.c_on, LED_CLS.c_off, LED_AS_active.c_on, LED_AS_active.c_off, LED_AS_alarm.c_on, LED_AS_alarm.c_off, LED_AS_alarm_det.c_on, LED_AS_alarm_det.c_off, LED_AS_IM.c_on, LED_AS_IM.c_off, fingerPW.c_fingerReleased, motorPW.c_up, motorPW.c_down, motorPW.c_off_up, CLS.c_lock, CLS.c_unlock, motorPW.c_off_dn, motorEM.c_left, motorEM.c_right, motorEM.c_up, motorEM.c_down, motorEM.c_off, EM_heating.c_on, EM_heating.c_off, AlarmSystem.c_activated, AlarmSystem.c_on, AlarmSystem.c_deactivated, AlarmSystem.c_off, AlarmSystem.c_IM_detected, InteriorMonitoring.c_on, InteriorMonitoring.c_off, Safety_fcn.c_unlock, Safety_fcn.c_locked;
+  location:
+    initial;
+    marked;
+    edge AlarmSystem.c_activated when true;
+    edge AlarmSystem.c_deactivated when true;
+    edge AlarmSystem.c_IM_detected when true;
+    edge AlarmSystem.c_off when true;
+    edge AlarmSystem.c_on when true;
+    edge CLS.c_lock when true;
+    edge CLS.c_unlock when true;
+    edge EM_heating.c_off when false;
+    edge EM_heating.c_on when false;
+    edge fingerPW.c_fingerReleased when true;
+    edge InteriorMonitoring.c_off when true;
+    edge InteriorMonitoring.c_on when true;
+    edge LED_AS_active.c_off when true;
+    edge LED_AS_active.c_on when true;
+    edge LED_AS_alarm.c_off when true;
+    edge LED_AS_alarm.c_on when true;
+    edge LED_AS_alarm_det.c_off when true;
+    edge LED_AS_alarm_det.c_on when true;
+    edge LED_AS_IM.c_off when true;
+    edge LED_AS_IM.c_on when true;
+    edge LED_CLS.c_off when true;
+    edge LED_CLS.c_on when bdd_eval(0, bdd_values);
+    edge LED_EM_bottom.c_off when true;
+    edge LED_EM_bottom.c_on when true;
+    edge LED_EM_heating.c_off when false;
+    edge LED_EM_heating.c_on when false;
+    edge LED_EM_left.c_off when true;
+    edge LED_EM_left.c_on when true;
+    edge LED_EM_right.c_off when true;
+    edge LED_EM_right.c_on when true;
+    edge LED_EM_top.c_off when true;
+    edge LED_EM_top.c_on when true;
+    edge LED_PW_dn.c_off when true;
+    edge LED_PW_dn.c_on when true;
+    edge LED_PW_FP.c_off when true;
+    edge LED_PW_FP.c_on when true;
+    edge LED_PW_up.c_off when true;
+    edge LED_PW_up.c_on when true;
+    edge motorEM.c_down when true;
+    edge motorEM.c_left when true;
+    edge motorEM.c_off when true;
+    edge motorEM.c_right when true;
+    edge motorEM.c_up when true;
+    edge motorPW.c_down when true;
+    edge motorPW.c_off_dn when true;
+    edge motorPW.c_off_up when true;
+    edge motorPW.c_up when true;
+    edge Safety_fcn.c_locked when true;
+    edge Safety_fcn.c_unlock when bdd_eval(3, bdd_values);
+end
+requirement invariant LED_EM_top.c_on needs positionEM.EM_top or positionEM.EM_top_left or positionEM.EM_top_right;
+requirement invariant LED_EM_top.c_off needs positionEM.EM_hor_pending or positionEM.EM_hor_left or positionEM.EM_hor_right;
+requirement invariant LED_EM_left.c_on needs positionEM.EM_hor_left or positionEM.EM_top_left or positionEM.EM_bottom_left;
+requirement invariant LED_EM_left.c_off needs positionEM.EM_hor_pending or positionEM.EM_bottom or positionEM.EM_top;
+requirement invariant LED_EM_bottom.c_on needs positionEM.EM_bottom or positionEM.EM_bottom_left or positionEM.EM_bottom_right;
+requirement invariant LED_EM_bottom.c_off needs positionEM.EM_hor_pending or positionEM.EM_hor_left or positionEM.EM_hor_right;
+requirement invariant LED_EM_right.c_on needs positionEM.EM_hor_right or positionEM.EM_top_right or positionEM.EM_bottom_right;
+requirement invariant LED_EM_right.c_off needs positionEM.EM_hor_pending or positionEM.EM_bottom or positionEM.EM_top;
+requirement invariant LED_PW_up.c_on needs fingerPW.On;
+requirement invariant LED_PW_up.c_off needs fingerPW.Off;
+requirement invariant LED_PW_up.c_on needs motorPW.Up;
+requirement invariant LED_PW_up.c_off needs motorPW.Idle;
+requirement invariant LED_PW_dn.c_on needs motorPW.Down;
+requirement invariant LED_PW_dn.c_off needs motorPW.Idle;
+requirement invariant LED_EM_heating.c_on needs EM_heating.On;
+requirement invariant LED_EM_heating.c_off needs EM_heating.Off;
+requirement invariant LED_CLS.c_on needs CLS.Locked;
+requirement invariant LED_CLS.c_off needs CLS.Unlocked;
+requirement invariant LED_AS_active.c_on needs AlarmSystem.Activated;
+requirement invariant LED_AS_active.c_off needs AlarmSystem.Deactivated;
+requirement invariant LED_AS_alarm.c_on needs AlarmSystem.On;
+requirement invariant LED_AS_alarm.c_off needs AlarmSystem.Activated;
+requirement invariant LED_AS_alarm_det.c_on needs AlarmSystem.Alarm_detected;
+requirement invariant LED_AS_alarm_det.c_off needs AlarmSystem.On;
+requirement invariant LED_AS_IM.c_on needs InteriorMonitoring.On;
+requirement invariant LED_AS_IM.c_off needs InteriorMonitoring.Off;
+requirement invariant motorPW.c_up needs buttonPW.Up or RCK_PW.Up;
+requirement invariant motorPW.c_up needs fingerPW.Off;
+requirement invariant motorPW.c_up needs not sensorPW.Up;
+requirement invariant motorPW.c_down needs buttonPW.Down or RCK_PW.Down;
+requirement invariant motorPW.c_down needs fingerPW.Off;
+requirement invariant motorPW.c_down needs not sensorPW.Down;
+requirement invariant motorPW.c_off_dn needs fingerPW.On or (FManPW.present => buttonPW.Idle) or sensorPW.Down or (FAutoPW.present => buttonPW.Up or RCK_PW.Up);
+requirement invariant motorPW.c_off_up needs fingerPW.On or (FManPW.present => buttonPW.Idle) or sensorPW.Up or (FAutoPW.present => buttonPW.Down or RCK_PW.Down);
+requirement invariant fingerPW.c_fingerReleased needs buttonPW.Down;
+requirement invariant motorEM.c_left needs not(positionEM.EM_hor_left or positionEM.EM_top_left or positionEM.EM_bottom_left);
+requirement invariant motorEM.c_right needs not(positionEM.EM_hor_right or positionEM.EM_top_right or positionEM.EM_bottom_right);
+requirement invariant motorEM.c_up needs not(positionEM.EM_top or positionEM.EM_top_right or positionEM.EM_top_left);
+requirement invariant motorEM.c_down needs not(positionEM.EM_bottom or positionEM.EM_bottom_right or positionEM.EM_bottom_left);
+requirement invariant motorEM.c_left needs buttonEM.Left or RCK_EM.Left;
+requirement invariant motorEM.c_right needs buttonEM.Right or RCK_EM.Right;
+requirement invariant motorEM.c_up needs buttonEM.Up or RCK_EM.Up;
+requirement invariant motorEM.c_down needs buttonEM.Down or RCK_EM.Down;
+requirement invariant motorEM.c_off needs buttonEM.Idle or RCK_EM.Idle;
+requirement invariant EM_heating.c_on needs EM_temp_time.Heating_on;
+requirement invariant EM_heating.c_on needs EM_temp_time.Heating_off;
+requirement invariant AlarmSystem.c_on needs Key_lock.Locked or RCK_CLS.Locked;
+requirement invariant AlarmSystem.c_off needs Key_lock.Unlocked or RCK_CLS.Unlocked;
+requirement invariant AlarmSystem.c_deactivated needs Key_lock.Unlocked or RCK_CLS.Unlocked;
+requirement invariant AlarmSystem.c_IM_detected needs InteriorMonitoring.Detected;
+requirement invariant InteriorMonitoring.c_off needs Key_lock.Unlocked or RCK_CLS.Unlocked;
+requirement invariant CLS.c_lock needs Key_lock.Locked or RCK_CLS.Locked or Auto_lock.Locked;
+requirement invariant CLS.c_unlock needs Key_lock.Unlocked or RCK_CLS.Unlocked;
+requirement invariant Safety_fcn.c_unlock needs RCK_CLS.Unlocked;

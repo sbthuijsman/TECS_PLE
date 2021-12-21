@@ -1,0 +1,116 @@
+import "CoffeeMachine_uncontrolled.cif";
+import "CoffeeMachine_featurelink.cif";
+import "CoffeeMachine_FM.cif";
+
+// lst1
+requirement not(Coffee.Coffee and Tea.Tea);
+
+//lst2
+requirement Coffee.coffee needs Coffee.NoChoice and Tea.NoChoice;
+requirement Coffee.cappuccino needs Coffee.NoChoice and Tea.NoChoice;
+requirement Tea.tea needs Coffee.NoChoice and Tea.NoChoice;
+
+//lst3
+requirement automaton RingAfterBeverageCompletion:
+    location NotCompleted:
+        initial; marked;
+        edge Coffee.done when FR.present goto Completed;
+        edge Tea.done when FR.present goto Completed;
+        edge Coffee.done, Tea.done when not FR.present;
+    location Completed:
+        edge Ringtone.ring goto NotCompleted;
+end
+
+//lst4
+plant automaton CoinPresence:
+    monitor;
+    location NoCoinPresent:
+        initial; marked;
+        edge Coin.insert goto CoinPresent;
+    location CoinPresent:
+        edge Cancel.cancel goto NoCoinPresent;
+        edge Machine.take_cup goto NoCoinPresent;
+end
+
+requirement Coffee.coffee needs CoinPresence.CoinPresent;
+requirement Coffee.cappuccino needs CoinPresence.CoinPresent;
+requirement Tea.tea needs CoinPresence.CoinPresent;
+requirement Sweet.sugar needs CoinPresence.CoinPresent;
+requirement Sweet.no_sugar needs CoinPresence.CoinPresent;
+
+//lst4 (give CoffeePoured and mention there are similar once, and add event conditions below)
+plant automaton CoffeePoured:
+    monitor;
+    location NotPoured:
+        initial;marked;
+        edge Coffee.pour_coffee goto Poured;
+    location Poured:
+        edge Machine.take_cup goto NotPoured;
+end
+plant automaton TeaPoured:
+    monitor;
+    location NotPoured:
+        initial;marked;
+        edge Tea.pour_tea goto Poured;
+    location Poured:
+        edge Machine.take_cup goto NotPoured;
+end
+plant automaton MilkPoured:
+    monitor;
+    location NotPoured:
+        initial;marked;
+        edge Coffee.pour_milk goto Poured;
+    location Poured:
+        edge Machine.take_cup goto NotPoured;
+end
+
+//lst
+requirement Coffee.pour_coffee needs CoffeePoured.NotPoured;
+requirement Tea.pour_tea needs TeaPoured.NotPoured;
+requirement Coffee.pour_milk needs MilkPoured.NotPoured;
+
+//lst
+requirement not(CoffeePoured.Poured and TeaPoured.Poured);
+requirement not(TeaPoured.Poured and MilkPoured.Poured);
+
+//lst
+requirement Coffee.done needs (Coffee.Coffee and CoffeePoured.Poured) or (Coffee.Cappuccino and CoffeePoured.Poured and MilkPoured.Poured);
+
+
+//lst5
+requirement automaton PourSugarTwice:
+    disc int[0..2] count=0;
+    location Idle:
+        initial; marked;
+        edge Sweet.sugar goto SugarNeeded;
+        edge Sweet.done when Sweet.NoSugar;
+        edge Machine.take_cup do count:=0;
+    location SugarNeeded:
+        edge Sweet.pour_sugar when count<2 do count:=count+1;
+        edge Sweet.done when count=2 goto Idle;
+        edge Machine.take_cup do count:=0;
+end
+
+//lst6
+requirement Cancel.cancel needs CoffeePoured.NotPoured and TeaPoured.NotPoured and MilkPoured.NotPoured and PourSugarTwice.count=0;
+
+//lst7 (give one and say we have the same for sugar done)
+requirement automaton TakeCupWhenCoffeeOrTeaDone:
+    location NotPoured:
+        initial;marked;
+        edge Coffee.done goto Done;
+        edge Tea.done goto Done;
+    location Done:
+        edge Machine.take_cup goto NotPoured;
+end
+requirement automaton TakeCupWhenSugarDone:
+    location NotPoured:
+        initial;marked;
+        edge Sweet.done goto Done;
+    location Done:
+        edge Machine.take_cup goto NotPoured;
+end
+requirement Machine.take_cup needs Coffee.NoChoice and Sweet.NoChoice and Tea.NoChoice;
+
+requirement Cancel.cancel needs not(FE.present and FD.present);
+requirement Sweet.Sugar => FS.present;

@@ -1,0 +1,29 @@
+import "CoffeeMachine_uncontrolled.cif";
+import "CoffeeMachine_FM.cif";
+
+
+plant automaton event_feature_link:
+  location: initial; marked;
+    edge Coffee.cappuccino when FC.present;
+    edge Coffee.coffee when FC.present;
+    edge Coffee.done when FC.present;
+    edge Coffee.pour_coffee when FC.present;
+    edge Coffee.pour_milk when FC.present;
+
+    edge Tea.done when FT.present;
+    edge Tea.pour_tea when FT.present;
+    edge Tea.tea when FT.present;
+
+    edge Sweet.done when FS.present;
+    edge Sweet.no_sugar when FS.present;
+    edge Sweet.pour_sugar when FS.present;
+    edge Sweet.sugar when FS.present;
+
+    edge Ringtone.ring when FR.present;
+
+    edge Coin.insert when FO.present;
+
+    edge Cancel.cancel when FX.present;
+
+    edge Machine.take_cup when FM.present;
+end

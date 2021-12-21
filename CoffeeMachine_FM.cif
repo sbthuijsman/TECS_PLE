@@ -1,0 +1,53 @@
+plant def FEATURE():
+    uncontrollable come,go;
+    disc bool present in any;
+    location: initial ; marked;
+    edge come when not present do present:=true;
+    edge go when present do present:=false;
+end
+
+plant def FEATURE_ATTRIBUTED(alg int x):
+    uncontrollable come,go;
+    disc bool present in any;
+    alg int cost = if present : x else 0 end;
+    location: initial ; marked;
+    edge come when not present do present:=true;
+    edge go when present do present:=false;
+end
+
+FM : FEATURE();
+FS : FEATURE_ATTRIBUTED(5);
+FO : FEATURE();
+FR : FEATURE_ATTRIBUTED(5);
+FB : FEATURE();
+FX : FEATURE_ATTRIBUTED(10);
+FE : FEATURE_ATTRIBUTED(5);
+FD : FEATURE_ATTRIBUTED(5);
+FP : FEATURE_ATTRIBUTED(7);
+FC : FEATURE_ATTRIBUTED(5);
+FT : FEATURE_ATTRIBUTED(3);
+
+alg bool r1 = FM.present <=> true;
+alg bool r2 = FM.present <=> FS.present;
+alg bool r3 = FM.present <=> FO.present;
+alg bool r4 = FR.present => FM.present;
+alg bool r5 = FM.present <=> FB.present;
+alg bool r6 = FX.present => FM.present;
+alg bool r7 = (FE.present <=> (not(FD.present) and FO.present)) and (FD.present <=> (not(FE.present) and FO.present));
+alg bool r8 = FP.present => FB.present;
+alg bool r9 = FB.present <=> FC.present;
+alg bool r10 = FT.present => FB.present;
+alg bool r11 = FP.present => FR.present;
+alg bool r12 = not(FD.present and FP.present);
+
+alg bool sys_valid = r1 and r2 and r3 and r4 and r5 and r6 and r7 and r8 and r9 and r10 and r11 and r12;
+
+plant automaton Validity:
+  location: initial sys_valid; marked;
+end
+
+alg int cost_sum = FS.cost+FR.cost+FX.cost+FE.cost+FD.cost+FP.cost+FC.cost+FT.cost;
+
+plant invariant cost_sum <= 30;
+
+plant invariant sys_valid;

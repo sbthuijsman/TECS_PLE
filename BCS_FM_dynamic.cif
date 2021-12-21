@@ -1,0 +1,65 @@
+plant def FEATURE():
+    uncontrollable come,go;
+    disc bool present in any;
+    location: initial ; marked;
+         edge come when not present do present:=true;
+         edge go when present do present:=false;
+end
+
+// Feature declaration by level in FM
+// Level 1
+FBCS:FEATURE();
+// Level 2
+FHMI:FEATURE(); FDoor:FEATURE(); FSecu:FEATURE();
+// Level 3
+FPowerW:FEATURE(); FMir:FEATURE(); FAlarm:FEATURE();FRCKey:FEATURE();FCLS:FEATURE();
+//Level 4
+FLED:FEATURE(); FFingerP:FEATURE(); FAutoPW:FEATURE(); FManPW:FEATURE(); FMirE:FEATURE(); FMirHeat:FEATURE();
+FInterMon:FEATURE(); FCtrAlarm:FEATURE(); FCtrAutoPW:FEATURE(); FSafe:FEATURE(); FAdjMir:FEATURE(); FAutoL:FEATURE();
+//Level 5
+FLEDMir:FEATURE(); FLEDFP:FEATURE(); FLEDPW:FEATURE(); FLEDCLS:FEATURE(); FLEDAlarm:FEATURE(); FLEDHeat:FEATURE();
+
+//Feature relations
+// Level 1
+alg bool r11 = FBCS.present; // Root feature present
+// Level 2
+alg bool r21 = FBCS.present <=> FHMI.present; // HMI mandatory
+alg bool r22 = FBCS.present <=> FDoor.present; // Door mandatory
+alg bool r23 = FSecu.present => FBCS.present; // Security optional
+// Level 3
+alg bool r31 = FDoor.present <=> (FPowerW.present and FMir.present); // PW and EM mandatory
+alg bool r32 = FAlarm.present => FSecu.present; // AS optional
+alg bool r33 = FCLS.present => FSecu.present; // CLS optional
+alg bool r34 = FRCKey.present => FSecu.present; // RCK optional
+// Level 4
+alg bool r41 = FLED.present => FHMI.present; // LED optional
+alg bool r42 = (FManPW.present <=> (not FAutoPW.present <=> FPowerW.present)) and
+                      (FAutoPW.present <=> (not FManPW.present <=> FPowerW.present)); //Manual or automatic PW
+alg bool r43 = FPowerW.present <=> (FFingerP.present); // Finger Protection mandatory
+alg bool r44 = FMir.present <=> (FMirE.present); // Electric exterior mirror mandatory
+alg bool r45 = FMirHeat.present => FMir.present; // Mirror heating optional
+alg bool r46 = FInterMon.present => FAlarm.present; // Interior monitoring optional
+alg bool r47 = FCtrAlarm.present => FRCKey.present; // Control alarm optional
+alg bool r48 = FCtrAutoPW.present => FRCKey.present; // Control automatic power window optional
+alg bool r49 = FSafe.present => FRCKey.present; // Safety optional
+alg bool r410 = FAdjMir.present => FRCKey.present; // Safety optional
+alg bool r411 = FAutoL.present => FCLS.present; // Automatic locking optional
+//Level 5
+alg bool r51 = FLED.present <=> (FLEDAlarm.present or FLEDFP.present or FLEDCLS.present or FLEDPW.present or FLEDMir.present or FLEDHeat.present);
+// cross tree relations
+alg bool rx1 = FLEDAlarm.present => FAlarm.present; //LED alarm requires Alarm
+alg bool rx2 = FLEDCLS.present => FCLS.present; //LED central requires central locking
+alg bool rx3 = FLEDHeat.present => FMirHeat.present; //LED heat mirror requires heated mirror
+alg bool rx4 = not(FManPW.present and FCtrAutoPW.present); //Manual power windows excludes control autoPW
+alg bool rx5 = FCtrAlarm.present => FAlarm.present; //Control alarm requires Alarm system
+alg bool rx6 = FRCKey.present => FCLS.present; //Remote control key requires central locking system
+
+alg bool sys_valid = r11 and r21 and r22 and r23 and r31 and r32 and r33 and r34 and r41 and r42 and r43 and r44 and
+                     r45 and r46 and r47 and r48 and r49 and r410 and r411 and r51 and rx1 and rx2 and rx3 and rx4 and
+                     rx5 and rx6;
+
+plant automaton Validity:
+  location: initial sys_valid; marked;
+end
+
+// requirement invariant sys_valid;

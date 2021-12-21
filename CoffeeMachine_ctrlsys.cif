@@ -1,0 +1,379 @@
+alg bool r1 = FM.present <=> true;
+alg bool r2 = FM.present <=> FS.present;
+alg bool r3 = FM.present <=> FO.present;
+alg bool r4 = FR.present => FM.present;
+alg bool r5 = FM.present <=> FB.present;
+alg bool r6 = FX.present => FM.present;
+alg bool r7 = (FE.present <=> not FD.present and FO.present) and (FD.present <=> not FE.present and FO.present);
+alg bool r8 = FP.present => FB.present;
+alg bool r9 = FB.present <=> FC.present;
+alg bool r10 = FT.present => FB.present;
+alg bool r11 = FP.present => FR.present;
+alg bool r12 = not(FD.present and FP.present);
+alg bool sys_valid = r1 and r2 and r3 and r4 and r5 and r6 and r7 and r8 and r9 and r10 and r11 and r12;
+plant automaton FM:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FS:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  alg int cost = if present: x else 0 end;
+  alg int x = 5;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FO:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FR:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  alg int cost = if present: x else 0 end;
+  alg int x = 5;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FB:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FX:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  alg int cost = if present: x else 0 end;
+  alg int x = 10;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FE:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  alg int cost = if present: x else 0 end;
+  alg int x = 5;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FD:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  alg int cost = if present: x else 0 end;
+  alg int x = 5;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FP:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  alg int cost = if present: x else 0 end;
+  alg int x = 7;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FC:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  alg int cost = if present: x else 0 end;
+  alg int x = 5;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton FT:
+  uncontrollable come;
+  uncontrollable go;
+  disc bool present in any;
+  alg int cost = if present: x else 0 end;
+  alg int x = 3;
+  location:
+    initial;
+    marked;
+    edge come when not present do present := true;
+    edge go when present do present := false;
+end
+plant automaton Validity:
+  location:
+    initial sys_valid;
+    marked;
+end
+//generated because plant_invariants are not yet supported in CIF at time of writing
+//replaces plant invariant sys_valid and plant invariant cost_sum<=30
+plant automaton sysvalid:
+  alphabet FM.come, FM.go, FS.come, FS.go, FO.come, FO.go, FR.come, FR.go, FB.come, FB.go, FX.come, FX.go, FE.come, FE.go, FD.come, FD.go, FP.come, FP.go, FC.come, FC.go, FT.come, FT.go;
+  initial (FD.present or FP.present or (not FR.present or (not FT.present or not FX.present))) and ((FD.present or (not FP.present or not FX.present)) and (not FD.present or not FR.present or (not FT.present or not FX.present)));
+  location:
+    initial;
+    marked;
+    edge FB.come when FO.present and FM.present and (not FD.present and FC.present) and (FE.present and not FP.present and (not FR.present and FS.present)) or (FO.present and FM.present and (not FD.present and FC.present) and (FE.present and not FP.present and (FR.present and (FS.present and not FT.present))) or FO.present and FM.present and (not FD.present and (FC.present and FE.present)) and (not FP.present and FR.present and (FS.present and (FT.present and not FX.present)))) or (FO.present and FM.present and (not FD.present and FC.present) and (FE.present and FP.present and (FR.present and (FS.present and not FX.present))) or FO.present and FM.present and (FD.present and FC.present) and (not FE.present and not FP.present and (not FR.present and FS.present)) or (FO.present and FM.present and (FD.present and FC.present) and (not FE.present and not FP.present and (FR.present and (FS.present and not FT.present))) or FO.present and FM.present and (FD.present and (FC.present and not FE.present)) and (not FP.present and FR.present and (FS.present and (FT.present and not FX.present)))));
+    edge FB.go when false;
+    edge FC.come when FB.present and FO.present and (FM.present and not FD.present) and (FE.present and not FP.present and (not FR.present and FS.present)) or (FB.present and FO.present and (FM.present and not FD.present) and (FE.present and not FP.present and (FR.present and (FS.present and not FT.present))) or FB.present and FO.present and (FM.present and (not FD.present and FE.present)) and (not FP.present and FR.present and (FS.present and (FT.present and not FX.present)))) or (FB.present and FO.present and (FM.present and not FD.present) and (FE.present and FP.present and (FR.present and (FS.present and not FX.present))) or FB.present and FO.present and (FM.present and FD.present) and (not FE.present and not FP.present and (not FR.present and FS.present)) or (FB.present and FO.present and (FM.present and FD.present) and (not FE.present and not FP.present and (FR.present and (FS.present and not FT.present))) or FB.present and FO.present and (FM.present and (FD.present and not FE.present)) and (not FP.present and FR.present and (FS.present and (FT.present and not FX.present)))));
+    edge FC.go when false;
+    edge FD.come when FB.present and FO.present and (FM.present and FC.present) and (not FE.present and not FP.present and (not FR.present and FS.present)) or (FB.present and FO.present and (FM.present and FC.present) and (not FE.present and not FP.present and (FR.present and (FS.present and not FT.present))) or FB.present and FO.present and (FM.present and (FC.present and not FE.present)) and (not FP.present and FR.present and (FS.present and (FT.present and not FX.present))));
+    edge FD.go when FB.present and FO.present and (FM.present and FC.present) and (FE.present and not FP.present and (not FR.present and FS.present)) or FB.present and FO.present and (FM.present and FC.present) and (FE.present and not FP.present and (FR.present and (FS.present and not FT.present))) or (FB.present and FO.present and (FM.present and (FC.present and FE.present)) and (not FP.present and FR.present and (FS.present and (FT.present and not FX.present))) or FB.present and FO.present and (FM.present and FC.present) and (FE.present and FP.present and (FR.present and (FS.present and not FX.present))));
+    edge FE.come when FB.present and FO.present and (FM.present and not FD.present) and (FC.present and not FP.present and (not FR.present and FS.present)) or FB.present and FO.present and (FM.present and not FD.present) and (FC.present and not FP.present and (FR.present and (FS.present and not FT.present))) or (FB.present and FO.present and (FM.present and (not FD.present and FC.present)) and (not FP.present and FR.present and (FS.present and (FT.present and not FX.present))) or FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FP.present and (FR.present and (FS.present and not FX.present))));
+    edge FE.go when FB.present and FO.present and (FM.present and FD.present) and (FC.present and not FP.present and (not FR.present and FS.present)) or (FB.present and FO.present and (FM.present and FD.present) and (FC.present and not FP.present and (FR.present and (FS.present and not FT.present))) or FB.present and FO.present and (FM.present and (FD.present and FC.present)) and (not FP.present and FR.present and (FS.present and (FT.present and not FX.present))));
+    edge FM.come when FB.present and FO.present and (not FD.present and FC.present) and (FE.present and not FP.present and (not FR.present and FS.present)) or (FB.present and FO.present and (not FD.present and FC.present) and (FE.present and not FP.present and (FR.present and (FS.present and not FT.present))) or FB.present and FO.present and (not FD.present and (FC.present and FE.present)) and (not FP.present and FR.present and (FS.present and (FT.present and not FX.present)))) or (FB.present and FO.present and (not FD.present and FC.present) and (FE.present and FP.present and (FR.present and (FS.present and not FX.present))) or FB.present and FO.present and (FD.present and FC.present) and (not FE.present and not FP.present and (not FR.present and FS.present)) or (FB.present and FO.present and (FD.present and FC.present) and (not FE.present and not FP.present and (FR.present and (FS.present and not FT.present))) or FB.present and FO.present and (FD.present and (FC.present and not FE.present)) and (not FP.present and FR.present and (FS.present and (FT.present and not FX.present)))));
+    edge FM.go when false;
+    edge FO.come when FB.present and FM.present and (not FD.present and FC.present) and (FE.present and not FP.present and (not FR.present and FS.present)) or (FB.present and FM.present and (not FD.present and FC.present) and (FE.present and not FP.present and (FR.present and (FS.present and not FT.present))) or FB.present and FM.present and (not FD.present and (FC.present and FE.present)) and (not FP.present and FR.present and (FS.present and (FT.present and not FX.present)))) or (FB.present and FM.present and (not FD.present and FC.present) and (FE.present and FP.present and (FR.present and (FS.present and not FX.present))) or FB.present and FM.present and (FD.present and FC.present) and (not FE.present and not FP.present and (not FR.present and FS.present)) or (FB.present and FM.present and (FD.present and FC.present) and (not FE.present and not FP.present and (FR.present and (FS.present and not FT.present))) or FB.present and FM.present and (FD.present and (FC.present and not FE.present)) and (not FP.present and FR.present and (FS.present and (FT.present and not FX.present)))));
+    edge FO.go when false;
+    edge FP.come when FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (FR.present and (FS.present and not FX.present)));
+    edge FP.go when FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (not FR.present and FS.present)) or (FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (FR.present and (FS.present and not FT.present))) or FB.present and FO.present and (FM.present and (not FD.present and FC.present)) and (FE.present and FR.present and (FS.present and (FT.present and not FX.present)))) or (FB.present and FO.present and (FM.present and FD.present) and (FC.present and not FE.present and (not FR.present and FS.present)) or (FB.present and FO.present and (FM.present and FD.present) and (FC.present and not FE.present and (FR.present and (FS.present and not FT.present))) or FB.present and FO.present and (FM.present and (FD.present and FC.present)) and (not FE.present and FR.present and (FS.present and (FT.present and not FX.present)))));
+    edge FR.come when FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (not FP.present and (FS.present and not FT.present))) or FB.present and FO.present and (FM.present and (not FD.present and FC.present)) and (FE.present and not FP.present and (FS.present and (FT.present and not FX.present))) or (FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (FP.present and (FS.present and not FX.present))) or (FB.present and FO.present and (FM.present and FD.present) and (FC.present and not FE.present and (not FP.present and (FS.present and not FT.present))) or FB.present and FO.present and (FM.present and (FD.present and FC.present)) and (not FE.present and not FP.present and (FS.present and (FT.present and not FX.present)))));
+    edge FR.go when FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (not FP.present and FS.present)) or FB.present and FO.present and (FM.present and FD.present) and (FC.present and not FE.present and (not FP.present and FS.present));
+    edge FS.come when FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (not FP.present and not FR.present)) or (FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (not FP.present and (FR.present and not FT.present))) or FB.present and FO.present and (FM.present and (not FD.present and FC.present)) and (FE.present and not FP.present and (FR.present and (FT.present and not FX.present)))) or (FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (FP.present and (FR.present and not FX.present))) or FB.present and FO.present and (FM.present and FD.present) and (FC.present and not FE.present and (not FP.present and not FR.present)) or (FB.present and FO.present and (FM.present and FD.present) and (FC.present and not FE.present and (not FP.present and (FR.present and not FT.present))) or FB.present and FO.present and (FM.present and (FD.present and FC.present)) and (not FE.present and not FP.present and (FR.present and (FT.present and not FX.present)))));
+    edge FS.go when false;
+    edge FT.come when FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (not FP.present and (not FR.present and FS.present))) or FB.present and FO.present and (FM.present and (not FD.present and FC.present)) and (FE.present and not FP.present and (FR.present and (FS.present and not FX.present))) or (FB.present and FO.present and (FM.present and (not FD.present and FC.present)) and (FE.present and FP.present and (FR.present and (FS.present and not FX.present))) or (FB.present and FO.present and (FM.present and FD.present) and (FC.present and not FE.present and (not FP.present and (not FR.present and FS.present))) or FB.present and FO.present and (FM.present and (FD.present and FC.present)) and (not FE.present and not FP.present and (FR.present and (FS.present and not FX.present)))));
+    edge FT.go when FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (not FP.present and FS.present)) or (FB.present and FO.present and (FM.present and (not FD.present and FC.present)) and (FE.present and FP.present and (FR.present and (FS.present and not FX.present))) or FB.present and FO.present and (FM.present and FD.present) and (FC.present and not FE.present and (not FP.present and FS.present)));
+    edge FX.come when FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (not FP.present and (not FR.present and FS.present))) or FB.present and FO.present and (FM.present and (not FD.present and FC.present)) and (FE.present and not FP.present and (FR.present and (FS.present and not FT.present))) or (FB.present and FO.present and (FM.present and FD.present) and (FC.present and not FE.present and (not FP.present and (not FR.present and FS.present))) or FB.present and FO.present and (FM.present and (FD.present and FC.present)) and (not FE.present and not FP.present and (FR.present and (FS.present and not FT.present))));
+    edge FX.go when FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (not FP.present and FS.present)) or (FB.present and FO.present and (FM.present and not FD.present) and (FC.present and FE.present and (FP.present and (FR.present and FS.present))) or FB.present and FO.present and (FM.present and FD.present) and (FC.present and not FE.present and (not FP.present and FS.present)));
+end
+plant automaton event_feature_link:
+  location:
+    initial;
+    marked;
+    edge Coffee.cappuccino when FC.present;
+    edge Coffee.coffee when FC.present;
+    edge Coffee.done when FC.present;
+    edge Coffee.pour_coffee when FC.present;
+    edge Coffee.pour_milk when FC.present;
+    edge Tea.done when FT.present;
+    edge Tea.pour_tea when FT.present;
+    edge Tea.tea when FT.present;
+    edge Sweet.done when FS.present;
+    edge Sweet.no_sugar when FS.present;
+    edge Sweet.pour_sugar when FS.present;
+    edge Sweet.sugar when FS.present;
+    edge Ringtone.ring when FR.present;
+    edge Coin.insert when FO.present;
+    edge Cancel.cancel when FX.present;
+    edge Machine.take_cup when FM.present;
+end
+plant automaton Coin:
+  controllable insert;
+  location:
+    initial;
+    marked;
+    edge insert;
+end
+plant automaton Cancel:
+  controllable cancel;
+  location:
+    initial;
+    marked;
+    edge cancel;
+end
+plant automaton Sweet:
+  controllable sugar;
+  controllable no_sugar;
+  controllable done;
+  controllable pour_sugar;
+  location NoChoice:
+    initial;
+    marked;
+    edge sugar goto Sugar;
+    edge no_sugar goto NoSugar;
+  location Sugar:
+    marked;
+    edge sugar, pour_sugar;
+    edge no_sugar goto NoSugar;
+    edge done goto NoChoice;
+  location NoSugar:
+    marked;
+    edge no_sugar;
+    edge sugar goto Sugar;
+    edge done goto NoChoice;
+end
+plant automaton Ringtone:
+  controllable ring;
+  location:
+    initial;
+    marked;
+    edge ring;
+end
+plant automaton Coffee:
+  controllable cappuccino;
+  controllable coffee;
+  controllable done;
+  controllable pour_coffee;
+  controllable pour_milk;
+  location NoChoice:
+    initial;
+    marked;
+    edge cappuccino goto Cappuccino;
+    edge coffee goto Coffee;
+  location Cappuccino:
+    marked;
+    edge pour_coffee, pour_milk;
+    edge coffee goto Coffee;
+    edge done goto NoChoice;
+  location Coffee:
+    marked;
+    edge pour_coffee;
+    edge cappuccino goto Cappuccino;
+    edge done goto NoChoice;
+end
+plant automaton Tea:
+  controllable tea;
+  controllable done;
+  controllable pour_tea;
+  location NoChoice:
+    initial;
+    marked;
+    edge tea goto Tea;
+  location Tea:
+    marked;
+    edge pour_tea;
+    edge done goto NoChoice;
+end
+plant automaton Machine:
+  controllable take_cup;
+  location:
+    initial;
+    marked;
+    edge take_cup;
+end
+supervisor automaton RingAfterBeverageCompletion:
+  location NotCompleted:
+    initial;
+    marked;
+    edge Coffee.done when FR.present goto Completed;
+    edge Tea.done when FR.present goto Completed;
+    edge Coffee.done, Tea.done when not FR.present;
+  location Completed:
+    edge Ringtone.ring goto NotCompleted;
+end
+plant automaton CoinPresence:
+  monitor;
+  location NoCoinPresent:
+    initial;
+    marked;
+    edge Coin.insert goto CoinPresent;
+  location CoinPresent:
+    edge Cancel.cancel goto NoCoinPresent;
+    edge Machine.take_cup goto NoCoinPresent;
+end
+plant automaton CoffeePoured:
+  monitor;
+  location NotPoured:
+    initial;
+    marked;
+    edge Coffee.pour_coffee goto Poured;
+  location Poured:
+    edge Machine.take_cup goto NotPoured;
+end
+plant automaton TeaPoured:
+  monitor;
+  location NotPoured:
+    initial;
+    marked;
+    edge Tea.pour_tea goto Poured;
+  location Poured:
+    edge Machine.take_cup goto NotPoured;
+end
+plant automaton MilkPoured:
+  monitor;
+  location NotPoured:
+    initial;
+    marked;
+    edge Coffee.pour_milk goto Poured;
+  location Poured:
+    edge Machine.take_cup goto NotPoured;
+end
+supervisor automaton PourSugarTwice:
+  disc int[0..2] count = 0;
+  location Idle:
+    initial;
+    marked;
+    edge Sweet.sugar goto SugarNeeded;
+    edge Sweet.done when Sweet.NoSugar;
+    edge Machine.take_cup do count := 0;
+  location SugarNeeded:
+    edge Sweet.pour_sugar when count < 2 do count := count + 1;
+    edge Sweet.done when count = 2 goto Idle;
+    edge Machine.take_cup do count := 0;
+end
+supervisor automaton TakeCupWhenCoffeeOrTeaDone:
+  location NotPoured:
+    initial;
+    marked;
+    edge Coffee.done goto Done;
+    edge Tea.done goto Done;
+  location Done:
+    edge Machine.take_cup goto NotPoured;
+end
+supervisor automaton TakeCupWhenSugarDone:
+  location NotPoured:
+    initial;
+    marked;
+    edge Sweet.done goto Done;
+  location Done:
+    edge Machine.take_cup goto NotPoured;
+end
+supervisor automaton sup:
+  alphabet Coffee.cappuccino, Coffee.coffee, Coffee.done, Coffee.pour_coffee, Coffee.pour_milk, Tea.done, Tea.pour_tea, Tea.tea, Sweet.done, Sweet.no_sugar, Sweet.pour_sugar, Sweet.sugar, Ringtone.ring, Coin.insert, Cancel.cancel, Machine.take_cup;
+  location:
+    initial;
+    marked;
+    edge Cancel.cancel when Sweet.NoChoice and (Coffee.NoChoice and Tea.NoChoice) and (TeaPoured.NotPoured and (CoffeePoured.NotPoured and PourSugarTwice.count != 2)) or (Sweet.NoChoice and Coffee.NoChoice and (Tea.Tea and (TeaPoured.NotPoured and PourSugarTwice.count != 2)) or Sweet.NoChoice and Coffee.Coffee and (CoffeePoured.NotPoured and PourSugarTwice.count != 2)) or (Sweet.NoChoice and Coffee.Cappuccino and (CoffeePoured.NotPoured and (MilkPoured.NotPoured and PourSugarTwice.count != 2)) or (Sweet.NoSugar and (Coffee.NoChoice and Tea.NoChoice) and (PourSugarTwice.Idle and (TeaPoured.NotPoured and CoffeePoured.NotPoured)) or Sweet.NoSugar and Coffee.NoChoice and (Tea.Tea and (PourSugarTwice.Idle and TeaPoured.NotPoured)))) or (Sweet.NoSugar and Coffee.Coffee and (PourSugarTwice.Idle and CoffeePoured.NotPoured) or (Sweet.NoSugar and Coffee.Cappuccino and (PourSugarTwice.Idle and (CoffeePoured.NotPoured and MilkPoured.NotPoured)) or Sweet.Sugar and (Coffee.NoChoice and Tea.NoChoice) and (TeaPoured.NotPoured and (CoffeePoured.NotPoured and PourSugarTwice.count = 0))) or (Sweet.Sugar and Coffee.NoChoice and (Tea.Tea and (TeaPoured.NotPoured and PourSugarTwice.count = 0)) or (Sweet.Sugar and Coffee.Coffee and (CoffeePoured.NotPoured and PourSugarTwice.count = 0) or Sweet.Sugar and Coffee.Cappuccino and (CoffeePoured.NotPoured and (MilkPoured.NotPoured and PourSugarTwice.count = 0)))));
+    edge Coffee.cappuccino when CoinPresence.CoinPresent and not Coffee.Coffee and (Tea.NoChoice and TakeCupWhenCoffeeOrTeaDone.NotPoured);
+    edge Coffee.coffee when CoinPresence.CoinPresent and not Coffee.Cappuccino and (Tea.NoChoice and TakeCupWhenCoffeeOrTeaDone.NotPoured);
+    edge Coffee.done when not Coffee.Cappuccino and CoffeePoured.Poured or Coffee.Cappuccino and (CoffeePoured.Poured and MilkPoured.Poured);
+    edge Coffee.pour_coffee when CoffeePoured.NotPoured;
+    edge Coffee.pour_milk when MilkPoured.NotPoured;
+    edge Coin.insert when true;
+    edge Machine.take_cup when true;
+    edge Ringtone.ring when true;
+    edge Sweet.done when true;
+    edge Sweet.no_sugar when CoinPresence.CoinPresent and not Sweet.Sugar and (PourSugarTwice.Idle and TakeCupWhenSugarDone.NotPoured) or (CoinPresence.CoinPresent and (not Sweet.Sugar and PourSugarTwice.SugarNeeded) or CoinPresence.CoinPresent and (Sweet.Sugar and PourSugarTwice.count = 2));
+    edge Sweet.pour_sugar when true;
+    edge Sweet.sugar when CoinPresence.CoinPresent and TakeCupWhenSugarDone.NotPoured;
+    edge Tea.done when true;
+    edge Tea.pour_tea when TeaPoured.NotPoured;
+    edge Tea.tea when CoinPresence.CoinPresent and (Coffee.NoChoice and TakeCupWhenCoffeeOrTeaDone.NotPoured);
+end

@@ -1,0 +1,77 @@
+// import "FM_CM.cif";
+
+plant automaton Coin:
+    controllable insert;
+    location: initial; marked;
+        edge insert;
+end
+
+plant automaton Cancel:
+    controllable cancel;
+    location: initial; marked;
+        edge cancel;
+end
+
+plant automaton Sweet:
+    controllable sugar, no_sugar, done;
+    controllable pour_sugar;
+    location NoChoice:
+        initial; marked;
+        edge sugar goto Sugar;
+        edge no_sugar goto NoSugar;
+    location Sugar:
+        marked;
+        edge sugar, pour_sugar;
+        edge no_sugar goto NoSugar;
+        edge done goto NoChoice;
+    location NoSugar:
+        marked;
+        edge no_sugar;
+        edge sugar goto Sugar;
+        edge done goto NoChoice;
+end
+
+plant automaton Ringtone:
+    controllable ring;
+    location: initial; marked;
+        edge ring;
+end
+
+plant automaton Coffee:
+    controllable cappuccino, coffee, done;
+    controllable pour_coffee, pour_milk;
+    location NoChoice:
+        initial; marked;
+        edge cappuccino goto Cappuccino;
+        edge coffee goto Coffee;
+    location Cappuccino:
+        marked;
+        edge pour_coffee, pour_milk;
+        edge coffee goto Coffee;
+        edge done goto NoChoice;
+    location Coffee:
+        marked;
+        edge pour_coffee;
+        edge cappuccino goto Cappuccino;
+        edge done goto NoChoice;
+end
+
+plant automaton Tea:
+    controllable tea, done;
+    controllable pour_tea;
+    location NoChoice:
+        initial; marked;
+        edge tea goto Tea;
+    location Tea:
+        marked;
+        edge pour_tea;
+        edge done goto NoChoice;
+end
+
+plant automaton Machine:
+    controllable take_cup;
+    location: initial; marked;
+        edge take_cup;
+end
+
+
