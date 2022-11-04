@@ -1,3 +1,4 @@
+// import "BCS_FM_static.cif";
 import "BCS_FM_dynamic.cif";
 
 // ECU HMI
